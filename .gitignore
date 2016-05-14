@@ -1,0 +1,6 @@
+#block some stuff
+/dump
+**/*dump/*
+**/*.json
+**/*.pyc
+scrape_figures\dump

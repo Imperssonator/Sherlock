@@ -1,0 +1,8 @@
+Each scrapy project is designed to be ran within the folder.
+
+Ex: to run the time_covers spider, go into the
+    "Reverse_plot/scrapy_stuff/time_covers" directory and then run
+     "scrapy pyimagesearch-cover-spider -o output.json"
+
+The images will be dumped into Reverse_Plot/dump/full and the output file will
+be in "Reverse_Plot/scrapy_stuff/time_covers" directory.
