@@ -18,7 +18,7 @@ disp(D)
 Files = D;  %{D(:).path}';
 
 % For some reason this crashes Matlab beyond about 100 images.......
-NumFiles = 5;
+NumFiles = length(Files);
 disp('Files:')
 disp(NumFiles)
 % return
