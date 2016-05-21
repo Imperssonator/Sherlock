@@ -4,3 +4,5 @@
 **/*.json
 **/*.pyc
 scrape_figures\dump
+*.mat
+**/*.mat
