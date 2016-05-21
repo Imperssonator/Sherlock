@@ -8,7 +8,8 @@ classdef FiberAppData < handle
         panels                      % references to all panels
         openPanels                  % references to the open panels
         defaultPanels = {'ImageParameters', ...   % initially open panels
-            'ImageFiltering'};
+            'FiberTrackingParameters', ...
+            'FiberDataInformation'};
         
         isTutorial = false  % show tutorial messages
         tutorialShowed = {};    % list of showed tutorial messages

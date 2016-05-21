@@ -53,5 +53,5 @@ else
 end
 
 % Change a current folder
-cd(filePath);
+% cd(filePath);
 

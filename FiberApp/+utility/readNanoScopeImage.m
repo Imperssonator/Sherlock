@@ -32,7 +32,7 @@ for k = 1:n
 end
 
 % Check for a Height channels in the file
-ind_h = find(strcmp(image_data, 'Phase'));
+ind_h = find(strcmp(image_data, 'Height'));
 if isempty(ind_h)
     errordlg('Selected file does not contain any Height Channels.');
     fclose(fid);

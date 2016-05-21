@@ -2,12 +2,13 @@ function OpenImage(hObject, eventdata)
 FA = guidata(hObject);
 % Open dialog for image selection
 [fileName, filePath] = uigetfile({'*.*', 'NanoScope File (*.*)'; ...
-    '*.tif; *.tiff', 'Image file (*.tif, *.tiff)'});
+    '*.flt', 'FLT image file (*.flt)'; ...
+    '*.tif; *.tiff, *.jpg', 'Image file (*.tif, *.tiff, *.jpg)'});
 if isequal(fileName, 0); return; end % Cancel button pressed
 
 % Read image data according to its extension
 switch utility.getFileExtension(fileName)
-    case {'tif', 'tiff'} % *.tif or *.tiff
+    case {'tif', 'tiff', 'jpg'} % *.tif or *.tiff
         % Read an image and store it in memory
         im = int16(imread(fullfile(filePath, fileName)));
         if size(im, 3) == 3 % In case of 3 channels (rgb), convert to grayscale
@@ -29,6 +30,10 @@ switch utility.getFileExtension(fileName)
         sizeY_nm = sizeY;
         scaleXY = 1;
         scaleZ = 1;
+        
+    case 'flt' % FLT file
+        [im, sizeX, sizeY, sizeX_nm, sizeY_nm, scaleXY, scaleZ] = ...
+            utility.readFltImage(filePath, fileName);
         
     otherwise % NanoScope
         [im, sizeX, sizeY, sizeX_nm, sizeY_nm, scaleXY, scaleZ] = ...
@@ -60,7 +65,7 @@ FA.updateImage();
 FA.checkAccordance();
 
 % Change a current folder
-cd(filePath);
+% cd(filePath);
 
 % Put main window in a focus
 figure(gcf);
