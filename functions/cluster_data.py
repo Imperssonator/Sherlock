@@ -77,18 +77,25 @@ def main():
     # my_cmap = convert_to_colormap(ROIs[0])
 
 
-def plot_colors(im, title_text='RGB space'):
+def plot_colors(im, title_text='RGB space', tform=None):
     """ For visualization purposes... im should have 3 color dimensions
     """
     xs, ys, zs = [im[:, :, i].reshape(-1) for i in range(im.shape[2])]
     bs = xs + ys + zs
+    if tform is not None:
+            im_trans = tform(im)
+            xs, ys, zs = [im_trans[:, :, i].reshape(-1)
+                          for i in range(im.shape[2])]
+
     # thresh = flt.threshold_li(bs)
     thresh = 2.9
-    bs = bs < thresh
-    total = bs.sum()
-    inds = range(total)
-    inds = shuffle(inds, random_state=3)
-    want = 5000
+    bs = bs < thresh  # binary classification of pts
+    total = bs.sum()  # number of points below thresh
+    inds = range(total)  # generate inds for the number of pts
+    inds = shuffle(inds, random_state=3)  # shuffle the inds
+    want = 5000  # number of points to plot
+
+    # first "want" points in the sorted and threshed image
     xs = xs[bs][inds[0:want]]
     ys = ys[bs][inds[0:want]]
     zs = zs[bs][inds[0:want]]
@@ -98,9 +105,9 @@ def plot_colors(im, title_text='RGB space'):
     ax = fig.add_subplot(111, projection='3d')
     ax.set_title(title_text)
     ax.scatter(xs, ys, zs)
-    ax.set_ylim([0, 1])
-    ax.set_xlim([0, 1])
-    ax.set_zlim([0, 1])
+    # ax.set_ylim([0, 1])
+    # ax.set_xlim([0, 1])
+    # ax.set_zlim([0, 1])
 
 
 def cluster_colorspace_km(im, n_clusters, train_size=5000):

@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import skimage.io as io
+import skimage.color as color
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import scipy.ndimage as ndi
@@ -9,7 +10,7 @@ from matplotlib import cm
 from bin_color import bin_colors
 import cluster_data as cld
 
-testim_file = 'isotherm3.jpg'
+testim_file = '../examples/isotherm3.jpg'
 xaxes = [[97, 461], [583, 945]]
 yaxes = [[18, 340], [18, 340]]
 # testim_file = 'isotherm2.jpg'
@@ -38,24 +39,6 @@ ax1.set_title('First ROI, OG image')
 ax2.set_title('Second ROI, OG image')
 
 for ii, i in enumerate(ROIs):
-    im_recon, im_label = cld.cluster_colorspace_km(i, 4)
-    print('ROI number {0}'.format(ii))
-    labels_as_ims = cld.return_series(im_label)
-    for jj, j in enumerate(labels_as_ims):
-        plt.figure()
-        plt.imshow(j, cmap='viridis')
-        plt.suptitle('Region {0} Label {1}'.format(ii, jj))
-        print("COMs for Region {0} and Label {1}".format(ii, jj))
-        pts = sss.isolate_Points(j)
-        print(len(pts), pts)
-    pts = [sss.isolate_Points(j) for j in labels_as_ims]
-    plt.figure()
-    plt.imshow(im_recon)
-    plt.hold(True)
-    markers = ['o', 'v', '^', '<', '>']
-    for ii, series in enumerate(pts):
-        xs = [k[1] for k in series]
-        ys = [k[0] for k in series]
-        plt.scatter(xs, ys, c='g', marker=markers[ii])
-    plt.hold(False)
+    cld.plot_colors(i, title_text='LAB space, ROI {0}'.format(ii),
+                    tform=color.rgb2lab)
 plt.show()
