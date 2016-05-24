@@ -110,7 +110,7 @@ def plot_colors(im, title_text='RGB space', tform=None):
     # ax.set_zlim([0, 1])
 
 
-def cluster_colorspace_km(im, n_clusters, train_size=5000):
+def cluster_colorspace_km(im, n_clusters, train_size=5000, ret_center=False):
     """ This function takes in an input image and a cluster number
         and clusters the image in RGB space using scikit's implementation
         of the kmeans shift algorithm.
@@ -121,6 +121,8 @@ def cluster_colorspace_km(im, n_clusters, train_size=5000):
             n_clusters: number of clusters in color space to find
             train_size: number of points to use in training the model. default
                 is 5000
+            ret_center: Boolean whether or not to return the cluster centers as
+                an n_clusters x 3 array. default is False
 
         Returns:
             reconstructed im: w x h x 3 image where the inital rgb values have
@@ -128,6 +130,8 @@ def cluster_colorspace_km(im, n_clusters, train_size=5000):
                 point belongs to
             labeled im: w x h x 1 image where the value corresponds to the
                 associated cluster label
+            cluster centers: n_clusters x 3 np array. only returned if flag is
+                True
 
     """
     w, h, d = OG_shape = im.shape
@@ -152,7 +156,11 @@ def cluster_colorspace_km(im, n_clusters, train_size=5000):
             im_label[i][j] = labels[label_idx] + 1
             label_idx += 1
     im_label = np.squeeze(im_label.astype(int))
-    return im_comp, im_label
+    if ret_center is True:
+        return im_comp, im_label, np.array([kmeans.cluster_centers_[i]
+                                           for i in labels])
+    else:
+        return im_comp, im_label
 
 
 def cluster_colorspace_ms(im, quant=0.1, train_size=5000, min_bin_freq=10):
