@@ -14,7 +14,7 @@ from skimage.measure import regionprops
 from sklearn.utils import shuffle
 from matplotlib.colors import ListedColormap, rgb_to_hsv, hsv_to_rgb
 from matplotlib import cm
-from bin_color import bin_colors
+# from bin_color import bin_colors
 
 
 def main():
