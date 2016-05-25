@@ -157,8 +157,8 @@ def cluster_colorspace_km(im, n_clusters, train_size=5000, ret_center=False):
             label_idx += 1
     im_label = np.squeeze(im_label.astype(int))
     if ret_center is True:
-        return im_comp, im_label, np.array([kmeans.cluster_centers_[i]
-                                           for i in labels])
+        return im_comp, im_label, np.array([kmeans.cluster_centers_[i, :]
+                                           for i in range(n_clusters)])
     else:
         return im_comp, im_label
 
