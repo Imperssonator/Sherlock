@@ -29,8 +29,9 @@ def bin_colors(im, bin_per_axis=4):
 
 
 def find_dom_color(im, pltcolor=False):
-    recon_im, label_im = cld.cluster_colorspace_km(im, n_clusters=2,
-                                                   train_size=2000)
+    recon_im, label_im, cents = cld.cluster_colorspace_km(im, n_clusters=2,
+                                                          train_size=2000,
+                                                          ret_center=True)
     if pltcolor is True:
         cld.plot_colors(recon_im, title_text='k=2 colors from find_dom_color')
         plt.figure()
@@ -39,7 +40,9 @@ def find_dom_color(im, pltcolor=False):
     regions = regionprops(label_im)
     areas, labels = np.split(np.array([[i.area, i.label] for i in regions]),
                              2, axis=1)
-    return label_im == labels[np.argmax(areas)]
+    dom_label = label_im == labels[np.argmax(areas)]
+    dom_color = cents[np.argmax(areas)]
+    return dom_label, dom_color
 
 
 if __name__ == '__main__':
