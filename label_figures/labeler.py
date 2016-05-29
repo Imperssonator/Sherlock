@@ -11,7 +11,7 @@ def present_images(img_dir, dataset, conn, cur):
   if len(imgs) == 0: 
     print 'ERR: IMAGE DIR EMPTY dir:'+img_dir
     
-  for img_file in imgs[0:5]:
+  for img_file in imgs:
     if row_exists(cur, img_file): 
       print 'INFO: image already processed: ' + img_file
       continue
@@ -30,6 +30,8 @@ def present_images(img_dir, dataset, conn, cur):
 def return_default_if_empty(val, default_val):
   if val == None or val.strip() == '':
     return default_val
+  if val == 'y' or val == 'Y': return 1
+  if val == 'n' or val == 'N': return 0
   return val
   
 def get_db_cursor():
