@@ -48,7 +48,6 @@ def get_db_cursor():
 def row_exists(cur, path):
   cur.execute("SELECT * FROM img_labels WHERE file_name= '" + path + "';")
   return cur.fetchone() != None 
-  
 
 
 if __name__ == '__main__':
@@ -63,3 +62,4 @@ if __name__ == '__main__':
     quit()
   conn, cur = get_db_cursor()
   present_images(options.dir, options.dataset, conn, cur)
+
