@@ -26,15 +26,32 @@ def clean_ocr_results(ocr,charspace = 7,neg_charspace = -3):
     words = word_list(list_nums,cd_final)
     return words
 
-def yoverlap(ind1,ind2,list_nums,buffer=1):
+def yoverlap(ind1,ind2,list_nums,min_overlap=0.3):
+    # At least 30% of one character's bounding box y-range must overlap with the other's
     y1low=list_nums[ind1][2]
     y1high=list_nums[ind1][4]
     y2low = list_nums[ind2][2]
     y2high = list_nums[ind2][4]
+    y1_range = range(y1low,y1high)
+    y2_range = range(y2low,y2high)
+    overlap = [val for val in y1_range if val in y2_range]
+    max_overlap_frac = max(float(len(overlap))/float(len(y1_range)),
+                           float(len(overlap))/float(len(y2_range))
+                          )
+    if max_overlap_frac>min_overlap:
+        over=True
+    else:
+        over=False
+    '''
+    overlap_frac_1=(y1high-y2low)/(y1high-y1low)  # How much of first char overlaps with second
+    overlap_frac_2=(y2
+    
+
     if y2low in range(y1low-buffer,y1high+buffer) or y2high in range(y1low-buffer,y1high+buffer):
         over=True
     else:
         over=False
+    '''
     return over
 
 def make_word(letters,start,close_diffs):
