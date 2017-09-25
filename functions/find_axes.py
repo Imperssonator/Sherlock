@@ -54,7 +54,7 @@ def get_xticks(nbw,xax,tickMargin=11,minTickLen=0,maxGap=0):
     xaxImg[xax[1]-tickMargin:xax[1]+tickMargin, xax[0]-1:xax[2]+1] = nbw[xax[1]-tickMargin:xax[1]+tickMargin, xax[0]-1:xax[2]+1]
     xaxImg = xaxImg.astype('uint8')
     # Hough Transform to obtain the vertical lines, then sort by x-coordinate
-    xTicksHough = cv2.HoughLinesP(xaxImg,1,np.pi,2, minLineLength = minTickLen, maxLineGap = maxGap)[0]
+    xTicksHough = np.reshape(cv2.HoughLinesP(xaxImg,1,np.pi,2, minLineLength = minTickLen, maxLineGap = maxGap),(-1,4))
     # xTicksLen = np.absolute(np.diff(xTicksHough[:,[1,3]],axis=1))
     # xticksx = xTicksHough[:,0]
     xtsort = xTicksHough[xTicksHough[:,0].argsort()]
@@ -68,7 +68,7 @@ def get_yticks(nbw,yax,tickMargin=11,minTickLen=0,maxGap=0):
     yaxImg = yaxImg.astype('uint8')
     yaxRot = ndimage.interpolation.rotate(yaxImg, -90)
     # Hough Transform to obtain the vertical lines, then sort by x-coordinate
-    yTicksHoughRot = cv2.HoughLinesP(yaxRot,1,np.pi,1, minLineLength = minTickLen, maxLineGap = maxGap)[0]
+    yTicksHoughRot = np.reshape(cv2.HoughLinesP(yaxRot,1,np.pi,1, minLineLength = minTickLen, maxLineGap = maxGap),(-1,4))
     yTicksHough = yTicksHoughRot[:,[3,0,1,2]]
     yTicksHough[:,[1,3]]=m-yTicksHough[:,[1,3]]
     yTicksList = yTicksHough.tolist()
@@ -140,7 +140,6 @@ def get_yaxis(HoughP,nbw):
     return HoughP[yaxLine,:]
 
 if __name__ == '__main__':
-    print('garbage')
     img = cv2.imread('isotherm1.png')
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     r, bw = th3 = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
