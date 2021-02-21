@@ -123,8 +123,10 @@ def cluster_colorspace_km(im, n_clusters, train_size=5000):
                 associated cluster label
 
     """
+#    hsvimg = rgb_to_hsv(im)
     w, h, d = OG_shape = im.shape
-    im_array = np.reshape(im, (w * h, d))
+    im_array = np.reshape(im,(w * h, d))
+#    im_array = np.ravel(hsvimg[:,:,0]).reshape(-1,1) #, (w * h, d))
 
     print('KM: fitting model on a small sub-sample of the data')
     im_array_sample = shuffle(im_array, random_state=3)[:train_size]
